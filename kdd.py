@@ -75,7 +75,6 @@ def load(test=False):
     fname = FTEST if test else FTRAIN
     df = pd.read_csv(fname, header=None, names=col_names)
     data = df[0:42]
-    data.apply(lambda x: MinMaxScaler().fit_transform(x))
     print data.describe()
 
     if not test:
@@ -103,6 +102,7 @@ def feature(data):
         "dst_host_srv_diff_host_rate", "dst_host_serror_rate", "dst_host_srv_serror_rate",
         "dst_host_rerror_rate", "dst_host_srv_rerror_rate"]
     feature = data[feature_name].astype(float)
+    feature.apply(lambda x: MinMaxScaler().fit_transform(x))
     return feature
 
 
@@ -130,6 +130,7 @@ def data_split(valid=0.0):
 
 if __name__ == '__main__':
     data, label = load()
-    print label.value_counts()
+    feature  = feature(data)
+    print feature.describe()
 
     # feature(data)
